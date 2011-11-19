@@ -46,17 +46,17 @@ class Raplet < Sinatra::Base
   # Returns a static hash of useful information about the Raplet.
   def metadata
     {
-      :name => "My Custom Raplet",
-      :description => "This is just a template. Customize it for your own purposes.",
+      :name => "QRCode Raplet",
+      :description => "Shows a QRCode under phone numbers in the HUD",
       :welcome_text => %q{
-        <p>Welcome to your new Raplet!</p>
-        <p>This is the welcome text, which is displayed before a user installs the Raplet.
-        You can use it to explain what the Raplet provides, and why the user might be
-        interested in using it. You can include HTML for <em>formatting</em>.</p>
+        <p>In order to see this raplet in action, connect your Google Contacts
+        to Rapportive and then click on a phone number.</p>
+        <p>You'll then be able to take a photo of the QRCode instead of having
+        to type the number into your phone.</p>
       },
-      :provider_name => "Your name",
-      :provider_url => "http://example.com",
-      :config_url => "#{raplet_base_url}/config"
+      :provider_name => "Conrad Irwin",
+      :provider_url => "http://github.com/ConradIrwin/qrcode-raplet",
+      :type => 'telephony'
     }
   end
 
@@ -102,10 +102,8 @@ class Raplet < Sinatra::Base
   get "/raplet" do
     if params[:show] == "metadata"
       jsonp_response(metadata)
-    elsif user = User.first(:raplet_token => params[:oauth_token])
-      jsonp_response(raplet_request(user))
     else
-      jsonp_response(access_denied)
+      jsonp_response(raplet_request(nil))
     end
   end
 
